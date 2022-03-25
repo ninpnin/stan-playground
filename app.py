@@ -17,15 +17,15 @@ def fit_posterior(args):
 
     posterior = stan.build(stan_code, data=data, random_seed=1)
     fit = posterior.sample(num_chains=4, num_samples=args.samples)
-    fit_df = fit.to_frame()
     
-    return fit_df
+    return fit
 
 def main(args):
     fit = fit_posterior(args)
-    print(fit)
-
-    # TODO: Plot
+    fit_df = fit.to_frame()
+    print(fit_df)
+    if args.savepath is not None:
+        fit_df.to_csv(args.savepath, index=False)
 
 if __name__ == '__main__':
     import argparse
@@ -34,5 +34,6 @@ if __name__ == '__main__':
     parser.add_argument("--dataset", type=str, default=None,
         help="Name of the dataset. If not provided, use model default.")
     parser.add_argument("--samples", type=int, default=1000)
+    parser.add_argument("--savepath", type=str, default=None)
     args = parser.parse_args()
     main(args)
