@@ -15,7 +15,7 @@ def fit_posterior(args):
 
     print(type(data), data.keys(), data.values())
 
-    posterior = stan.build(stan_code, data=data, random_seed=1)
+    posterior = stan.build(stan_code, data=data)
     fit = posterior.sample(num_chains=4, num_samples=args.samples)
     
     return fit
